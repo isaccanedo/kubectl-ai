@@ -1,0 +1,41 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: rpc-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rpc-server
+  template:
+    metadata:
+      labels:
+        app: rpc-server
+    spec:
+      serviceAccountName: rpc-server
+      containers:
+      - name: rpc-server
+        image: rpc-server-cpu:latest # placeholder value, replaced by deployment scripts
+
+---
+
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: rpc-server
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: rpc-server
+  labels:
+    app: rpc-server
+spec:
+  selector:
+    app: rpc-server
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
